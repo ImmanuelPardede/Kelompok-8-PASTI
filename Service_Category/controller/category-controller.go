@@ -76,14 +76,17 @@ func (c *categoryController) Update(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
+
+	// Mendapatkan ID dari parameter URL dan mengonversinya menjadi tipe uint64
 	idStr := ctx.Param("id")
-	id, errID := strconv.ParseUint(idStr, 10, 64)
-	if errID != nil {
-		res := helper.BuildErrorResponse("Failed to get ID", "No param ID were found", helper.EmptyObj{})
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		res := helper.BuildErrorResponse("Failed to parse ID", err.Error(), helper.EmptyObj{})
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
-	categoryUpdateDTO.ID = uint(id) // Convert id to uint
+	categoryUpdateDTO.ID = uint(id) // Menetapkan ID yang telah diubah ke dalam struct CategoryUpdateDTO
+
 	result := c.CategoryService.Update(categoryUpdateDTO)
 	response := helper.BuildResponse(true, "OK!", result)
 	ctx.JSON(http.StatusOK, response)
