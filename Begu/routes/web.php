@@ -2,9 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Admin\SubcategoryController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Costumer\AddressController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -29,6 +31,14 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::delete('/admin/categories/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
 
+
+    Route::resource('subcategories', SubCategoryController::class);
+
+
+    Route::get('/address/{user_id}', [AddressController::class, 'index'])->name('address.index');
+
+
+    
 
 });
    

@@ -5,47 +5,46 @@ import (
 	"gorm.io/gorm"
 )
 
-type AddressRepository struct {
-	DB *gorm.DB
+type AddressRepository interface {
+	InsertAddress(address model.Address) model.Address
+	UpdateAddress(address model.Address) model.Address
+	All() []model.Address
+	FindByID(AddressID uint) model.Address
+	DeleteAddress(address model.Address)
 }
 
-func NewAddressRepository(db *gorm.DB) *AddressRepository {
-	return &AddressRepository{DB: db}
+type addressConnection struct {
+	connection *gorm.DB
 }
 
-func (ar *AddressRepository) CreateAddress(address *model.Address) (*model.Address, error) {
-	if err := ar.DB.Create(address).Error; err != nil {
-		return nil, err
+func NewAddressRepository(db *gorm.DB) AddressRepository {
+	return &addressConnection{
+		connection: db,
 	}
-	return address, nil
 }
 
-func (ar *AddressRepository) UpdateAddress(address *model.Address) (*model.Address, error) {
-	if err := ar.DB.Save(address).Error; err != nil {
-		return nil, err
-	}
-	return address, nil
+func (db *addressConnection) InsertAddress(address model.Address) model.Address {
+	db.connection.Save(&address)
+	return address
 }
 
-func (ar *AddressRepository) DeleteAddress(address *model.Address) error {
-	if err := ar.DB.Delete(address).Error; err != nil {
-		return err
-	}
-	return nil
+func (db *addressConnection) UpdateAddress(address model.Address) model.Address {
+	db.connection.Save(&address)
+	return address
 }
 
-func (ar *AddressRepository) GetAddressByID(id uint) (*model.Address, error) {
+func (db *addressConnection) All() []model.Address {
+	var addresses []model.Address
+	db.connection.Find(&addresses)
+	return addresses
+}
+
+func (db *addressConnection) FindByID(addressID uint) model.Address {
 	var address model.Address
-	if err := ar.DB.First(&address, id).Error; err != nil {
-		return nil, err
-	}
-	return &address, nil
+	db.connection.Find(&address, addressID)
+	return address
 }
 
-func (ar *AddressRepository) GetAllAddresses() ([]*model.Address, error) {
-	var addresses []*model.Address
-	if err := ar.DB.Find(&addresses).Error; err != nil {
-		return nil, err
-	}
-	return addresses, nil
+func (db *addressConnection) DeleteAddress(address model.Address) {
+	db.connection.Delete(&address)
 }

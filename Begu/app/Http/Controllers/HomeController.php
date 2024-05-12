@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -33,7 +34,9 @@ class HomeController extends Controller
      */
     public function adminHome()
     {
-        return view('adminHome');
+        $user_id = Auth::id(); // Mendapatkan ID pengguna yang saat ini masuk
+
+        return view('adminHome', compact('user_id'));
     }
     
     /**
