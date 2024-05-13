@@ -29,5 +29,5 @@ func main() {
 		brandRoutes.PUT("/:id", brandController.Update)
 		brandRoutes.DELETE("/:id", brandController.Delete)
 	}
-	r.Run(":6666")
+	r.Run(":9090")
 }
