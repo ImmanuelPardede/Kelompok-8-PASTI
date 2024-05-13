@@ -23,7 +23,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($address as $tol)
+                                @foreach($addresses as $tol)
                                     <tr>
                                         <td>{{ $tol['street'] }}</td>
                                         <td>{{ $tol['village'] }}</td>

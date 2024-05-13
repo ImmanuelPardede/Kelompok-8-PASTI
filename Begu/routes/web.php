@@ -35,7 +35,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::resource('subcategories', SubCategoryController::class);
 
 
-    Route::get('/address/{user_id}', [AddressController::class, 'index'])->name('address.index');
+    Route::get('/address/{userId}', [AddressController::class, 'index'])->name('address.index');
 
 
     

@@ -8,12 +8,12 @@ use Illuminate\Support\Facades\Http;
 
 class AddressController extends Controller
 {
-    public function index()
-    {
-        
-        $response = Http::get('http://localhost:9999/api/address');
-        $address = $response->json();
 
-        return view('costumer.address.index', compact('address'));
+    public function index($userId)
+    {
+        $response = Http::get("http://localhost:9999/api/address/user/{$userId}");
+        $addresses = $response->json();
+
+        return view('costumer.address.index', compact('addresses'));
     }
 }

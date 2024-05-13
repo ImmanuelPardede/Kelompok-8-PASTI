@@ -11,6 +11,7 @@ type AddressRepository interface {
 	All() []model.Address
 	FindByID(AddressID uint) model.Address
 	DeleteAddress(address model.Address)
+	FindByUserID(userID uint) []model.Address // Add this line
 }
 
 type addressConnection struct {
@@ -43,6 +44,12 @@ func (db *addressConnection) FindByID(addressID uint) model.Address {
 	var address model.Address
 	db.connection.Find(&address, addressID)
 	return address
+}
+
+func (db *addressConnection) FindByUserID(userID uint) []model.Address {
+	var addresses []model.Address
+	db.connection.Where("user_id = ?", userID).Find(&addresses)
+	return addresses
 }
 
 func (db *addressConnection) DeleteAddress(address model.Address) {
