@@ -12,6 +12,6 @@ type Address struct {
 	District   string `gorm:"type:varchar(100)" json:"district"`
 	Regency    string `gorm:"type:varchar(100)" json:"regency"`
 	Province   string `gorm:"type:varchar(100)" json:"province"`
-	PostalCode int    `json:"postal_code"`
+	PostalCode string `json:"postal_code"`
 	Detail     string `gorm:"type:varchar(255)" json:"detail"`
 }

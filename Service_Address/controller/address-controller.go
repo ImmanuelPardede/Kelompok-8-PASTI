@@ -16,11 +16,10 @@ import (
 // CategoryController is a contract about something that this controller can do
 type AddressController interface {
 	All(ctx *gin.Context)
-	FindByID(ctx *gin.Context)
 	Insert(ctx *gin.Context)
 	Update(ctx *gin.Context)
 	Delete(ctx *gin.Context)
-	FindByUserID(ctx *gin.Context)
+	FindByID(ctx *gin.Context)
 }
 
 // CategoryService is a contract about something that this service can do
@@ -70,18 +69,6 @@ func (c *addressController) FindByID(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, address)
-}
-
-func (ac *addressController) FindByUserID(c *gin.Context) {
-	userIDParam := c.Param("user_id")
-	userID, err := strconv.ParseUint(userIDParam, 10, 64)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
-		return
-	}
-
-	addresses := ac.addressService.FindByUserID(userID)
-	c.JSON(http.StatusOK, addresses)
 }
 
 func (c *addressController) Insert(ctx *gin.Context) {

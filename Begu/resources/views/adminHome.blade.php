@@ -14,7 +14,7 @@
                     <!-- Tambahkan link menuju index categories -->
                     <a href="{{ route('admin.categories.index') }}" class="btn btn-primary mt-3">Manage Categories</a>
                     <a href="{{ route('subcategories.index') }}" class="btn btn-primary mt-3">Manage SubCategories</a>
-                    <a href="{{ route('address.index', ['userId' => auth()->user()->id]) }}" class="btn btn-primary">Lihat Alamat</a>
+                    <a href="{{ route('address.index')}}" class="btn btn-primary">Lihat Alamat</a>
 
                 </div>
             </div>

@@ -19,8 +19,6 @@ type AddressService interface {
 	Delete(b model.Address)
 	All() []model.Address
 	FindByID(addressID uint64) model.Address
-	FindByUserID(userID uint64) []model.Address // Add this line
-
 }
 
 type addressService struct {
@@ -52,11 +50,6 @@ func (service addressService) FindByID(addressID uint64) model.Address {
 
 	id := uint(addressID)
 	return service.addressRepository.FindByID(id)
-}
-
-func (service addressService) FindByUserID(userID uint64) []model.Address {
-	addresses := service.addressRepository.FindByUserID(uint(userID))
-	return addresses
 }
 
 func (service addressService) Insert(b dto.AddressCreateDTO) model.Address {

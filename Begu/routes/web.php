@@ -35,10 +35,14 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::resource('subcategories', SubCategoryController::class);
 
 
-    Route::get('/address/{userId}', [AddressController::class, 'index'])->name('address.index');
 
 
     
 
 });
    
+Route::get('/address', [AddressController::class, 'index'])->name('address.index');
+Route::get('/addresses/create', [AddressController::class, 'create'])->name('address.create');
+Route::post('/addresses', [AddressController::class, 'store'])->name('address.store');
+Route::get('/address/{id}/edit', [AddressController::class, 'edit'])->name('address.edit');
+Route::put('/address/{id}', [AddressController::class, 'update'])->name('address.update');

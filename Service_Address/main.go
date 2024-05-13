@@ -26,10 +26,9 @@ func main() {
 	{
 		addressRoutes.GET("/", addressController.All)
 		addressRoutes.POST("/", addressController.Insert)
-		addressRoutes.GET("/:id", addressController.FindByID)
 		addressRoutes.PUT("/:id", addressController.Update)
+		addressRoutes.GET("/:id", addressController.FindByID)
 		addressRoutes.DELETE("/:id", addressController.Delete)
-		addressRoutes.GET("/user/:user_id", addressController.FindByUserID)
 
 	}
 	r.Run(":9999")
