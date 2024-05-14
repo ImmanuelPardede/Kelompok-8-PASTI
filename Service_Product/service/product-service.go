@@ -1,7 +1,7 @@
 package service
 
 import (
-	"encoding/json" // Ini adalah impor yang diperlukan
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,100 +12,125 @@ import (
 	"github.com/mashingan/smapping"
 )
 
-// productService is a contract about something that this service can do
 type ProductService interface {
 	Insert(b dto.ProductCreateDTO) model.Product
 	Update(b dto.ProductUpdateDTO) model.Product
 	Delete(b model.Product)
 	All() []model.Product
-	FindByID(addressID uint64) model.Product
+	FindByID(productID uint64) model.Product
 }
 
 type productService struct {
-	productRepository repository.ProductRepository
+	productRepository  repository.ProductRepository
+	categoryService    CategoryService
+	subcategoryService SubCategoryService
+	brandService       BrandService
+}
+
+func NewProductService(productRepository repository.ProductRepository, categoryService CategoryService, subcategoryService SubCategoryService, brandService BrandService) ProductService {
+	return &productService{
+		productRepository:  productRepository,
+		categoryService:    categoryService,
+		subcategoryService: subcategoryService,
+		brandService:       brandService,
+	}
+}
+
+func (s *productService) All() []model.Product {
+	return s.productRepository.All()
+}
+
+func (s *productService) FindByID(productID uint64) model.Product {
+	// Konversi tipe data uint64 ke uint sebelum memanggil fungsi FindByID
+	return s.productRepository.FindByID(uint(productID))
+}
+
+func (s *productService) Insert(b dto.ProductCreateDTO) model.Product {
+	product := model.Product{}
+	err := smapping.FillStruct(&product, smapping.MapFields(&b))
+	if err != nil {
+		log.Fatalf("Failed map %v", err)
+	}
+
+	// Set category_id from DTO to the Product model
+	categoryID, err := s.categoryService.GetCategoryID(uint64(b.CategoryID)) // Konversi ke uint64
+	if err != nil {
+		log.Fatalf("Failed to get category ID: %v", err)
+	}
+	product.CategoryID = uint(categoryID) // Konversi ke uint
+
+	// Set subcategory_id from DTO to the Product model
+	subcategoryID, err := s.subcategoryService.GetSubCategoryID(uint64(b.SubCategoryID)) // Konversi ke uint64
+	if err != nil {
+		log.Fatalf("Failed to get subcategory ID: %v", err)
+	}
+	product.SubCategoryID = uint(subcategoryID) // Konversi ke uint
+
+	// Set brand_id from DTO to the Product model
+	brandID, err := s.brandService.GetBrandID(uint64(b.BrandID)) // Konversi ke uint64
+	if err != nil {
+		log.Fatalf("Failed to get brand ID: %v", err)
+	}
+	product.BrandID = uint(brandID) // Konversi ke uint
+
+	res := s.productRepository.InsertProduct(product)
+	return res
+}
+
+func (s *productService) Update(b dto.ProductUpdateDTO) model.Product {
+	product := model.Product{}
+	err := smapping.FillStruct(&product, smapping.MapFields(&b))
+	if err != nil {
+		log.Fatalf("Failed map %v", err)
+	}
+
+	// Set category_id from DTO to the Product model
+	categoryID, err := s.categoryService.GetCategoryID(uint64(b.CategoryID)) // Konversi ke uint64
+	if err != nil {
+		log.Fatalf("Failed to get category ID: %v", err)
+	}
+	product.CategoryID = uint(categoryID) // Konversi ke uint
+
+	// Set subcategory_id from DTO to the Product model
+	subcategoryID, err := s.subcategoryService.GetSubCategoryID(uint64(b.SubCategoryID)) // Konversi ke uint64
+	if err != nil {
+		log.Fatalf("Failed to get subcategory ID: %v", err)
+	}
+	product.SubCategoryID = uint(subcategoryID) // Konversi ke uint
+
+	// Set brand_id from DTO to the Product model
+	brandID, err := s.brandService.GetBrandID(uint64(b.BrandID)) // Konversi ke uint64
+	if err != nil {
+		log.Fatalf("Failed to get brand ID: %v", err)
+	}
+	product.BrandID = uint(brandID) // Konversi ke uint
+
+	res := s.productRepository.UpdateProduct(product)
+	return res
+}
+
+func (s *productService) Delete(b model.Product) {
+	s.productRepository.DeleteProduct(b)
 }
 
 type CategoryService interface {
 	GetCategoryID(id uint64) (uint64, error)
 }
 
-type categoryService struct{}
-
-func NewCategoryService() CategoryService {
-	return &categoryService{}
-}
-
 type SubCategoryService interface {
 	GetSubCategoryID(id uint64) (uint64, error)
-}
-
-type subcategoryService struct{}
-
-func NewSubCategoryService() SubCategoryService {
-	return &subcategoryService{}
 }
 
 type BrandService interface {
 	GetBrandID(id uint64) (uint64, error)
 }
 
-type brandService struct{}
+// Implement CategoryService, SubCategoryService, and BrandService
 
-func NewBrandService() BrandService {
-	return &brandService{}
-}
+type categoryService struct{}
 
-// NewProductService creates a new instance of ProductService
-func NewProductService(productRepository repository.ProductRepository) ProductService {
-	return &productService{
-		productRepository: productRepository,
-	}
-}
-
-func (service *productService) All() []model.Product {
-	return service.productRepository.All()
-}
-
-func (service *productService) FindByID(productID uint64) model.Product {
-
-	id := uint(productID)
-	return service.productRepository.FindByID(id)
-}
-
-func (service *productService) Insert(b dto.ProductCreateDTO) model.Product {
-	product := model.Product{}
-	err := smapping.FillStruct(&product, smapping.MapFields(&b))
-	if err != nil {
-		log.Fatalf("Failed map %v", err)
-	}
-
-	// Set category_id from DTO to the SubCategory model
-	product.CategoryID = b.CategoryID
-	product.SubCategoryID = b.SubCategoryID
-	product.BrandID = b.BrandID
-
-	res := service.productRepository.InsertProduct(product)
-	return res
-}
-
-func (service *productService) Update(b dto.ProductUpdateDTO) model.Product {
-	product := model.Product{}
-	err := smapping.FillStruct(&product, smapping.MapFields(&b))
-	if err != nil {
-		log.Fatalf("Failed map %v", err)
-	}
-
-	// Set category_id from DTO to the SubCategory model
-	product.CategoryID = b.CategoryID
-	product.SubCategoryID = b.SubCategoryID
-	product.BrandID = b.BrandID
-
-	res := service.productRepository.UpdateProduct(product)
-	return res
-}
-
-func (service *productService) Delete(b model.Product) {
-	service.productRepository.DeleteProduct(b)
+func NewCategoryService() CategoryService {
+	return &categoryService{}
 }
 
 func (cs *categoryService) GetCategoryID(id uint64) (uint64, error) {
@@ -115,7 +140,7 @@ func (cs *categoryService) GetCategoryID(id uint64) (uint64, error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		return 0, err
-	}
+	}	
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
@@ -132,8 +157,16 @@ func (cs *categoryService) GetCategoryID(id uint64) (uint64, error) {
 	return category.ID, nil
 }
 
+// Implement SubCategoryService
+
+type subcategoryService struct{}
+
+func NewSubCategoryService() SubCategoryService {
+	return &subcategoryService{}
+}
+
 func (cs *subcategoryService) GetSubCategoryID(id uint64) (uint64, error) {
-	// Replace the URL with the actual endpoint of your category service API
+	// Replace the URL with the actual endpoint of your subcategory service API
 	url := fmt.Sprintf("http://localhost:8888/api/subcategory/%d", id)
 
 	resp, err := http.Get(url)
@@ -156,9 +189,17 @@ func (cs *subcategoryService) GetSubCategoryID(id uint64) (uint64, error) {
 	return subcategory.ID, nil
 }
 
+// Implement BrandService
+
+type brandService struct{}
+
+func NewBrandService() BrandService {
+	return &brandService{}
+}
+
 func (cs *brandService) GetBrandID(id uint64) (uint64, error) {
-	// Replace the URL with the actual endpoint of your category service API
-	url := fmt.Sprintf("http://localhost:6666/api/brand/%d", id)
+	// Replace the URL with the actual endpoint of your brand service API
+	url := fmt.Sprintf("http://localhost:9090/api/brand/%d", id)
 
 	resp, err := http.Get(url)
 	if err != nil {

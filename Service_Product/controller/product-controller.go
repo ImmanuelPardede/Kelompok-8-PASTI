@@ -215,9 +215,7 @@ func (c *productController) Delete(ctx *gin.Context) {
 }
 
 func (cs *categoryService) GetCategoryID(id uint64) (uint64, error) {
-	// Panggil API kategori untuk mendapatkan informasi kategori berdasarkan ID
 	url := fmt.Sprintf("http://localhost:7777/api/category/%d", id)
-
 	resp, err := http.Get(url)
 	if err != nil {
 		return 0, err
@@ -228,14 +226,14 @@ func (cs *categoryService) GetCategoryID(id uint64) (uint64, error) {
 		return 0, fmt.Errorf("failed to fetch Category ID: %s", resp.Status)
 	}
 
-	var kategori struct {
+	var category struct {
 		ID uint64 `json:"id"`
 	}
-	if err := json.NewDecoder(resp.Body).Decode(&kategori); err != nil {
+	if err := json.NewDecoder(resp.Body).Decode(&category); err != nil {
 		return 0, err
 	}
 
-	return kategori.ID, nil
+	return category.ID, nil
 }
 
 func (cs *subcategoryService) GetSubCategoryID(id uint64) (uint64, error) {
@@ -264,7 +262,7 @@ func (cs *subcategoryService) GetSubCategoryID(id uint64) (uint64, error) {
 
 func (cs *brandService) GetBrandID(id uint64) (uint64, error) {
 	// Panggil API kategori untuk mendapatkan informasi kategori berdasarkan ID
-	url := fmt.Sprintf("http://localhost:6666/api/brand/%d", id)
+	url := fmt.Sprintf("http://localhost:9090/api/brand/%d", id)
 
 	resp, err := http.Get(url)
 	if err != nil {

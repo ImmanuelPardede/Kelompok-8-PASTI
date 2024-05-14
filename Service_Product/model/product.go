@@ -6,10 +6,11 @@ import (
 
 type Product struct {
 	gorm.Model
-	Name          string `gorm:"type:varchar(255)" json:"name"`
+	ProductID     string `gorm:"type:varchar(255)" json:"product_id"`
 	CategoryID    uint   `gorm:"type:int" json:"category_id"`
 	SubCategoryID uint   `gorm:"type:int" json:"subcategory_id"`
 	BrandID       uint   `gorm:"type:int" json:"brand_id"`
+	Name          string `gorm:"type:varchar(255)" json:"name"`
 	Size          string `gorm:"type:varchar(50)" json:"size"`
 	Quantity      int    `gorm:"type:int" json:"quantity"`
 	Price         int    `gorm:"type:int" json:"price"`

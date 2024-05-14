@@ -12,11 +12,11 @@ import (
 var (
 	db                 *gorm.DB                     = config.SetupDatabaseConnection()
 	productRepository  repository.ProductRepository = repository.NewProductRepository(db)
-	ProductService     service.ProductService       = service.NewProductService(productRepository)
-	CategoryService    service.CategoryService      = service.NewCategoryService()
-	SubcategoryService service.SubCategoryService   = service.NewSubCategoryService()
-	BrandService       service.BrandService         = service.NewBrandService()
-	productController  controller.ProductController = controller.NewProductController(ProductService, CategoryService, SubcategoryService, BrandService)
+	categoryService    service.CategoryService      = service.NewCategoryService()
+	subcategoryService service.SubCategoryService   = service.NewSubCategoryService()
+	brandService       service.BrandService         = service.NewBrandService()
+	ProductService     service.ProductService       = service.NewProductService(productRepository, categoryService, subcategoryService, brandService)
+	productController  controller.ProductController = controller.NewProductController(ProductService, categoryService, subcategoryService, brandService)
 )
 
 // membuat variable db dengan nilai setup database connection
