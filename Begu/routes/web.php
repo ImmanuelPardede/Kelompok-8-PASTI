@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\ProductController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Admin\SubcategoryController;
-
+use App\Http\Controllers\Admin\PromotedController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Costumer\AddressController;
@@ -49,6 +49,13 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::delete('/admin/products/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
+    Route::get('/promoted', [PromotedController::class, 'index'])->name('admin.promoted.index');
+    Route::get('/promoted/create', [PromotedController::class, 'create'])->name('admin.promoted.create');
+    Route::post('promoted', [PromotedController::class, 'store'])->name('admin.promoted.store');
+    Route::get('/promoted/{id}/edit', [PromotedController::class, 'edit'])->name('admin.promoted.edit');
+    Route::put('/promoted/{id}', [PromotedController::class, 'update'])->name('admin.promoted.update');
+    Route::delete('/admin/promoted/{id}', [PromotedController::class, 'destroy'])->name('admin.promoted.destroy');
+
 });
 
 Route::get('/address', [AddressController::class, 'index'])->name('address.index');

@@ -2,12 +2,12 @@
 
 @section('content')
 <div class="container">
-    <h1>Create Brand</h1>
-    <form method="POST" action="{{ route('admin.brands.store') }}" enctype="multipart/form-data">
+    <h1>Create Promoted</h1>
+    <form method="POST" action="{{ route('admin.promoted.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label for="name">Name:</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Enter brand name" required>
+            <label for="title">title:</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter brand title" required>
         </div>
         <div class="form-group">
             <label for="image">Image:</label>

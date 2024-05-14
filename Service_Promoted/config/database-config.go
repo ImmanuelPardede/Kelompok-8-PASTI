@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/iqbalsiagian17/User/model"
+	"github.com/iqbalsiagian17/Service_Promoted/model"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -27,7 +27,7 @@ func SetupDatabaseConnection() *gorm.DB {
 	if err != nil {
 		panic("Failed to create a connection to database")
 	}
-	db.AutoMigrate(&model.User{})
+	db.AutoMigrate(&model.Promoted{})
 	return db
 }
 
