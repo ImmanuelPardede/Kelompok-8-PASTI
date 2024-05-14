@@ -13,7 +13,7 @@ type ProductCreateDTO struct {
 }
 
 type ProductUpdateDTO struct {
-	ID            uint   `json:"id" binding:"required"`
+	ID            uint   `json:"id" form:"id"`
 	Name          string `json:"name"`
 	CategoryID    uint   `json:"category_id"`
 	SubCategoryID uint   `json:"subcategory_id"`

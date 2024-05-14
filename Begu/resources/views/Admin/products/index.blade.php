@@ -13,6 +13,7 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Description</th>
+                <th>Image</th> <!-- New column for image -->
                 <th>Action</th>
             </tr>
         </thead>
@@ -26,8 +27,15 @@
                 <td>{{ $product['price'] }}</td>
                 <td>{{ $product['description'] }}</td>
                 <td>
-                    <a href="{{ route('admin.products.edit', $product['product_id']) }}" class="btn btn-sm btn-primary">Edit</a>
-                    <form action="{{ route('admin.products.destroy', $product['product_id']) }}" method="POST" class="d-inline">
+                    @if ($product['image'])
+                        <img src="{{ asset('storage/' . $product['image']) }}" alt="{{ $product['name'] }}" width="100">
+                    @else
+                        No Image Available
+                    @endif
+                </td>
+                <td>
+                    <a href="{{ route('admin.products.edit', $product['ID']) }}" class="btn btn-sm btn-primary">Edit</a>
+                    <form action="{{ route('admin.products.destroy', $product['ID']) }}" method="POST" class="d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>

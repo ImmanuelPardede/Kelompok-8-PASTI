@@ -6,7 +6,6 @@ import (
 
 type Product struct {
 	gorm.Model
-	ProductID     string `gorm:"type:varchar(255)" json:"product_id"`
 	CategoryID    uint   `gorm:"type:int" json:"category_id"`
 	SubCategoryID uint   `gorm:"type:int" json:"subcategory_id"`
 	BrandID       uint   `gorm:"type:int" json:"brand_id"`

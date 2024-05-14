@@ -6,8 +6,17 @@
         <form method="POST" action="{{ route('admin.products.store') }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
+                <label for="category_id">Category:</label>
+                <select class="form-control" id="category_id" name="category_id">
+                    <option value="">Select Category</option>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category['id'] }}">{{ $category['name'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="subcategory_id">SubCategory:</label>
-                <select class="form-control" id="subcategory_id" name="subcategory_id" placeholder="Select SubCategory">
+                <select class="form-control" id="subcategory_id" name="subcategory_id">
                     <option value="">Select SubCategory</option>
                     @foreach ($subcategories as $subcategory)
                         <option value="{{ $subcategory['id'] }}">{{ $subcategory['name'] }}</option>
@@ -16,8 +25,8 @@
             </div>
             <div class="form-group">
                 <label for="brand_id">Brand:</label>
-                <select class="form-control" id="brand_id" name="brand_id" placeholder="Select Brand">
-                    <option value="">Select Category</option>
+                <select class="form-control" id="brand_id" name="brand_id">
+                    <option value="">Select Brand</option>
                     @foreach ($brands as $brand)
                         <option value="{{ $brand['id'] }}">{{ $brand['name'] }}</option>
                     @endforeach
@@ -33,17 +42,15 @@
             </div>
             <div class="form-group">
                 <label for="quantity">Quantity:</label>
-                <input type="text" class="form-control" id="quantity" name="quantity"
-                    placeholder="Enter product quantity">
+                <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter product quantity">
             </div>
             <div class="form-group">
                 <label for="price">Price:</label>
-                <input type="text" class="form-control" id="price" name="price" placeholder="Enter product price">
+                <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Enter product price">
             </div>
             <div class="form-group">
                 <label for="description">Description:</label>
-                <input type="text" class="form-control" id="description" name="description"
-                    placeholder="Enter product description">
+                <textarea class="form-control" id="description" name="description" placeholder="Enter product description"></textarea>
             </div>
             <div class="form-group">
                 <label for="image">Image:</label>
