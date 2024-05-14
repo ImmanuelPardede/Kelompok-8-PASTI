@@ -33,6 +33,7 @@ Route::middleware(['auth', 'user-access:admin'])->group(function () {
     Route::delete('/admin/categories/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
     Route::resource('subcategories', SubCategoryController::class);
 
+    Route::resource('brands', BrandController::class)->except(['show']);
     Route::get('/brands', [BrandController::class, 'index'])->name('admin.brands.index');
     Route::get('/brands/create', [BrandController::class, 'create'])->name('admin.brands.create');
     Route::post('brands', [BrandController::class, 'store'])->name('admin.brands.store');
