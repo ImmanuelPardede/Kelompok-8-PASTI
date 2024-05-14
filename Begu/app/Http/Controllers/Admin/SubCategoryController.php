@@ -52,7 +52,7 @@ class SubCategoryController extends Controller
          // Periksa jika respons dari API adalah sukses atau tidak
          if ($response->successful()) {
             // Jika sukses, redirect ke halaman daftar kategori dengan pesan sukses
-            return redirect()->route('admin.subcategories.index')->with('success', 'Category created successfully.');
+            return redirect()->route('subcategories.index')->with('success', 'Category created successfully.');
         } else {
             // Jika gagal, kembalikan ke halaman pembuatan kategori dengan pesan error
             return back()->withInput()->with('error', 'Failed to create category. Please try again.');

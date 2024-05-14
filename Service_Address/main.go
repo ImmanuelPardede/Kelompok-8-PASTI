@@ -13,8 +13,7 @@ var (
 	db                *gorm.DB                     = config.SetupDatabaseConnection()
 	addressRepository repository.AddressRepository = repository.NewAddressRepository(db)
 	AddressService    service.AddressService       = service.NewAddressService(addressRepository)
-	userService       service.UserService          = service.NewUserService()
-	addressController controller.AddressController = controller.NewAddressController(AddressService, userService)
+	addressController controller.AddressController = controller.NewAddressController(AddressService)
 )
 
 // membuat variable db dengan nilai setup database connection

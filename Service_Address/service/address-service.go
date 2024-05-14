@@ -59,8 +59,7 @@ func (service addressService) Insert(b dto.AddressCreateDTO) model.Address {
 		log.Fatalf("Failed map %v", err)
 	}
 
-	// Set user_id from DTO to the Address model
-	address.UserID = b.UserID
+
 
 	res := service.addressRepository.InsertAddress(address)
 	return res
