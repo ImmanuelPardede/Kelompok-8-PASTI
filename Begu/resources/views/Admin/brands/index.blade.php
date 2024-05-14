@@ -9,6 +9,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
+                <th>Image</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -17,6 +18,13 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $brand['name'] }}</td>
+                <td>
+                    @if(isset($brand['image']))
+                        <img src="{{ asset('storage/' . $brand['image']) }}" alt="{{ $brand['name'] }}" style="width: 50px; height: auto;">
+                    @else
+                        No image available
+                    @endif
+                </td>
                 <td>
                     <a href="{{ route('admin.brands.edit', $brand['ID']) }}" class="btn btn-sm btn-primary">Edit</a>
                     <form action="{{ route('admin.brands.destroy', $brand['ID']) }}" method="POST" class="d-inline">
@@ -28,7 +36,7 @@
             </tr>
             @empty
             <tr>
-                <td colspan="3">No brands found.</td>
+                <td colspan="4">No brands found.</td>
             </tr>
             @endforelse
         </tbody>
